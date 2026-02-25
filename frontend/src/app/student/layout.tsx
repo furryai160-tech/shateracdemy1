@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import {
     LayoutDashboard,
     BookOpen,
@@ -31,7 +32,13 @@ export default function StudentDashboardLayout({
             <aside className={`fixed md:relative inset-y-0 right-0 w-64 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 z-50 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                 <div className="p-6 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">ش</div>
+                        <Image
+                            src="/logo.png"
+                            alt="شاطر أكاديمي"
+                            width={36}
+                            height={36}
+                            className="rounded-lg object-contain"
+                        />
                         <span className="font-bold text-lg dark:text-white">الشاطر أكاديمي</span>
                     </Link>
                     <button onClick={() => setMobileMenuOpen(false)} className="md:hidden p-1 text-slate-500">

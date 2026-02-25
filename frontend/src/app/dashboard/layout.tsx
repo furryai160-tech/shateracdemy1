@@ -2,6 +2,7 @@
 
 'use client';
 
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -77,9 +78,13 @@ export default function DashboardLayout({
                         className="bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 flex flex-col shrink-0 relative z-30 shadow-xl md:shadow-none h-full md:relative absolute right-0"
                     >
                         <div className="h-20 flex items-center gap-3 px-6 border-b border-slate-100 dark:border-slate-800">
-                            <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-600/20">
-                                <span className="text-xl">ش</span>
-                            </div>
+                            <Image
+                                src="/logo.png"
+                                alt="شاطر أكاديمي"
+                                width={40}
+                                height={40}
+                                className="rounded-xl object-contain"
+                            />
                             <div>
                                 <h1 className="font-bold text-lg tracking-tight">الشاطر أكاديمي</h1>
                                 <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">لوحة المعلم</p>
