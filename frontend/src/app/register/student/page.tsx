@@ -41,10 +41,14 @@ export default function StudentRegisterPage() {
             let subdomain = '';
             if (typeof window !== 'undefined') {
                 const hostname = window.location.hostname;
-                if (hostname.includes('elshate.com') && !hostname.startsWith('www')) {
-                    subdomain = hostname.split('.')[0];
-                } else if (hostname.includes('localhost') && hostname.split('.').length > 1) {
-                    subdomain = hostname.split('.')[0];
+                const isVercelDomain = hostname.includes('vercel.app');
+
+                if (!isVercelDomain) {
+                    if (hostname.includes('elshate.com') && !hostname.startsWith('www')) {
+                        subdomain = hostname.split('.')[0];
+                    } else if (hostname.includes('localhost') && hostname.split('.').length > 1) {
+                        subdomain = hostname.split('.')[0];
+                    }
                 }
             }
 

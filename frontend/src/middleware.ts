@@ -17,12 +17,11 @@ export function middleware(request: NextRequest) {
 
     let subdomain = '';
 
-    if (hostname !== currentHost && hostname !== `www.${currentHost}`) {
+    const isVercelDomain = hostname.includes('vercel.app');
+
+    if (!isVercelDomain && hostname !== currentHost && hostname !== `www.${currentHost}`) {
         // Simple logic for development: split by dot
         const parts = hostname.split('.');
-        // If localhost (parts.length > 1 implied by distinction above? no.)
-        // localhost:3000 -> parts=['localhost:3000'] -> length 1.
-        // foo.localhost:3000 -> parts=['foo', 'localhost:3000'] -> length 2.
         if (parts.length > 1) {
             subdomain = parts[0];
         }
