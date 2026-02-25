@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "شاطر أكاديمي - El Shater Academy",
     description: "أقوى منصة تعليمية للمدرسين في مصر والوطن العربي",
-    url: "https://shateracdemy.com",
+    url: "https://alshateracdemy.com",
     siteName: "Shater Academy",
     images: [
       {
