@@ -50,7 +50,7 @@ export default function TenantManagePage() {
                             <span className="bg-red-100 text-red-700 text-xs px-2 py-0.5 rounded-full border border-red-200">غير نشط</span>
                         )}
                     </h1>
-                    <p className="text-slate-500 text-sm font-mono mt-1" dir="ltr">{tenant.subdomain}.elshate.com</p>
+                    <p className="text-slate-500 text-sm font-mono mt-1" dir="ltr">{tenant.subdomain}.alshateracademy.com</p>
                 </div>
             </div>
 
@@ -656,7 +656,7 @@ export function DesignManager({ tenant, onUpdate }: { tenant: any, onUpdate: (t:
                             <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
                         </div>
                         <div className="ml-4 flex-1 bg-slate-800 rounded-md h-6 w-full max-w-[200px] mx-auto opacity-50 text-[10px] text-center text-slate-400 flex items-center justify-center font-mono">
-                            {formData.subdomain}.elshate.com
+                            {formData.subdomain}.alshateracademy.com
                         </div>
                     </div>
                     {/* Preview Content (Scaled) */}

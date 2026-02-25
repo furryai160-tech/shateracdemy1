@@ -118,7 +118,7 @@ export default function RegisterPage() {
                         <div className="grid grid-cols-2 gap-4 text-right">
                             <div className="bg-white/10 p-4 rounded-xl backdrop-blur-sm">
                                 <h3 className="font-bold text-lg mb-1">دومين خاص بك</h3>
-                                <p className="text-sm text-slate-300">ابدأ بـ your-name.elshate.com فوراً.</p>
+                                <p className="text-sm text-slate-300">ابدأ بـ your-name.alshateracademy.com فوراً.</p>
                             </div>
                             <div className="bg-white/10 p-4 rounded-xl backdrop-blur-sm">
                                 <h3 className="font-bold text-lg mb-1">آمن وخاص</h3>

@@ -178,12 +178,12 @@ export default function AdminDashboard() {
                                         </td>
                                         <td className="px-6 py-4">
                                             <a
-                                                href={`http://${req.domain}.${process.env.NODE_ENV === 'production' ? 'elshate.com' : 'localhost:3000'}`}
+                                                href={`http://${req.domain}.${process.env.NODE_ENV === 'production' ? 'alshateracademy.com' : 'localhost:3000'}`}
                                                 target="_blank"
                                                 rel="noreferrer"
                                                 className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-2 py-1 rounded border border-slate-200 dark:border-slate-700 hover:text-indigo-600 hover:border-indigo-300 transition-colors"
                                             >
-                                                {req.domain}.{process.env.NODE_ENV === 'production' ? 'elshate.com' : 'localhost:3000'}
+                                                {req.domain}.{process.env.NODE_ENV === 'production' ? 'alshateracademy.com' : 'localhost:3000'}
                                             </a>
                                         </td>
                                         <td className="px-6 py-4 text-slate-500">
@@ -324,12 +324,12 @@ function InstructorsTab() {
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                     <a
-                                        href={`http://${instructor.subdomain}.${process.env.NODE_ENV === 'production' ? 'elshate.com' : 'localhost:3000'}`}
+                                        href={`http://${instructor.subdomain}.${process.env.NODE_ENV === 'production' ? 'alshateracademy.com' : 'localhost:3000'}`}
                                         target="_blank"
                                         rel="noreferrer"
                                         className="font-mono text-xs bg-slate-100 dark:bg-slate-900 px-2 py-1 rounded border border-slate-200 dark:border-slate-700 hover:text-indigo-600 hover:border-indigo-300 transition-colors"
                                     >
-                                        {instructor.subdomain}.{process.env.NODE_ENV === 'production' ? 'elshate.com' : 'localhost:3000'}
+                                        {instructor.subdomain}.{process.env.NODE_ENV === 'production' ? 'alshateracademy.com' : 'localhost:3000'}
                                     </a>
                                 </td>
                                 <td className="px-6 py-4 text-right text-slate-500">

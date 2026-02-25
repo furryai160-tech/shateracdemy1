@@ -44,7 +44,7 @@ export default function StudentRegisterPage() {
                 const isVercelDomain = hostname.includes('vercel.app');
 
                 if (!isVercelDomain) {
-                    if (hostname.includes('elshate.com') && !hostname.startsWith('www')) {
+                    if (hostname.includes('alshateracademy.com') && !hostname.startsWith('www')) {
                         subdomain = hostname.split('.')[0];
                     } else if (hostname.includes('localhost') && hostname.split('.').length > 1) {
                         subdomain = hostname.split('.')[0];
