@@ -250,7 +250,7 @@ export default function RegisterPage() {
                                 <div className="flex flex-row-reverse gap-2">
                                     <div className="relative flex-1" dir="ltr">
                                         <div className="flex items-center border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 transition-all">
-                                            <span className="pl-4 text-slate-500 font-medium">shater.com/</span>
+                                            <span className="pl-4 text-slate-500 font-medium">alshateracademy.com/</span>
                                             <input
                                                 type="text"
                                                 required

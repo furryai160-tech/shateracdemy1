@@ -7,7 +7,7 @@ export function middleware(request: NextRequest) {
 
     // Define the main domain
     const currentHost = process.env.NODE_ENV === 'production'
-        ? 'shater.com'
+        ? 'alshateracademy.com'
         : 'localhost:3000';
 
     // Check if subdomain

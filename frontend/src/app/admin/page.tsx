@@ -418,7 +418,7 @@ function InstructorsTab() {
                             <div>
                                 <label className="block text-sm font-medium mb-1.5">الرابط الفرعي (Subdomain)</label>
                                 <div className="flex gap-2 items-center" dir="ltr">
-                                    <span className="text-slate-500 text-sm font-medium">shater.com/</span>
+                                    <span className="text-slate-500 text-sm font-medium">alshateracademy.com/</span>
                                     <input
                                         type="text" required
                                         className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 rounded-lg border focus:ring-2 focus:ring-indigo-500"

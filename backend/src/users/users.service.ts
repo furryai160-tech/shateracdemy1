@@ -24,8 +24,8 @@ export class UsersService {
                 OR: [
                     { email: email },
                     { phone: email },
-                    { email: `student_${email}@shater.com` },
-                    { phone: email.replace('student_', '').replace('@shater.com', '') }
+                    { email: `student_${email}@alshateracademy.com` },
+                    { phone: email.replace('student_', '').replace('@alshateracademy.com', '') }
                 ]
             }
         });
