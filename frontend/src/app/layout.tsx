@@ -13,8 +13,33 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "El Shate' Academy",
-  description: "Advanced SaaS Learning Platform for Educators",
+  title: {
+    default: "شاطر أكاديمي - El Shater Academy",
+    template: "%s | شاطر أكاديمي"
+  },
+  description: "منصة شاطر أكاديمي - الحل الأمثل للمدرسين لإنشاء منصات تعليمية ذكية وإدارة الطلاب باحترافية.",
+  keywords: ["تعليم أونلاين", "منصة مدرسين", "شاطر أكاديمي", "SaaS Learning", "LMS Egypt"],
+  authors: [{ name: "FurryAI-Tech" }],
+  openGraph: {
+    title: "شاطر أكاديمي - El Shater Academy",
+    description: "أقوى منصة تعليمية للمدرسين في مصر والوطن العربي",
+    url: "https://shateracdemy.com",
+    siteName: "Shater Academy",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: "ar_EG",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "شاطر أكاديمي",
+    description: "المنصة المتطورة لإدارة المحتوى التعليمي",
+  },
 };
 
 export default function RootLayout({
