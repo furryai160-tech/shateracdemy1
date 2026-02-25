@@ -1,0 +1,307 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  TEACHER
+  STUDENT
+}
+
+enum Theme {
+  MODERN
+  ACADEMIC
+  DARK
+}
+
+enum VideoProvider {
+  VDOCIPHER
+  BUNNY
+  YOUTUBE
+  LOCAL
+}
+
+enum LiveStatus {
+  SCHEDULED
+  LIVE
+  ENDED
+}
+
+model Tenant {
+  id           String  @id @default(uuid())
+  name         String
+  subdomain    String  @unique
+  customDomain String? @unique
+
+  // Instructor Details
+  mobileNumber String?
+  subject      String?
+  grades       String[] // e.g. ["PREPARATORY", "SECONDARY"]
+
+  // Subscription Details
+  subscriptionStart DateTime?
+  subscriptionEnd   DateTime?
+  isActive          Boolean   @default(false)
+
+  // Customization
+  logoUrl      String?
+  primaryColor String? @default("#2563eb")
+  theme        Theme   @default(MODERN)
+  themeConfig  Json? // Extra customization keys
+
+  vodafoneCashNumber String?
+
+  users        User[]
+  courses      Course[]
+  liveSessions LiveSession[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model User {
+  id          String  @id @default(uuid())
+  email       String  @unique
+  password    String
+  name        String?
+  phone       String?
+  parentPhone String? // رقم ولي الأمر
+  governorate String? // المحافظة
+  gradeLevel  String? // e.g. "PREPARATORY_1", "SECONDARY_2", etc.
+  role        Role    @default(STUDENT)
+
+  tenantId String?
+  tenant   Tenant? @relation(fields: [tenantId], references: [id])
+
+  enrollments    Enrollment[]
+  quizResults    QuizResult[]
+  lessonProgress LessonProgress[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  walletBalance      Decimal             @default(0)
+  walletTransactions WalletTransaction[]
+  liveSessions       LiveSession[]
+}
+
+model WalletTransaction {
+  id       String            @id @default(uuid())
+  amount   Decimal
+  type     TransactionType // DEPOSIT, PURCHASE
+  status   TransactionStatus @default(PENDING)
+  proofUrl String? // For deposits
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  courseId String? // For purchases
+
+  adminNote String? // Reason for rejection or admin comment
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum TransactionType {
+  DEPOSIT
+  PURCHASE
+}
+
+enum TransactionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Course {
+  id          String  @id @default(uuid())
+  title       String
+  description String?
+  thumbnail   String?
+  price       Decimal @default(0)
+  isPublished Boolean @default(false)
+
+  tenantId String
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
+
+  gradeLevel String? // e.g. "PREPARATORY_1"
+
+  lessons      Lesson[]
+  enrollments  Enrollment[]
+  liveSessions LiveSession[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Lesson {
+  id          String  @id @default(uuid())
+  title       String
+  description String?
+  order       Int     @default(0)
+
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id])
+
+  videoProvider VideoProvider?
+  videoId       String? // External ID from provider
+  videoDuration Int? // In seconds
+
+  pdfUrl        String? // PDF Attachment URL
+  pdfTitle      String? // Optional PDF Title
+
+  isFree    Boolean @default(false)
+  dripDelay Int     @default(0) // Days after enrollment to unlock
+
+  quizzes        Quiz[]
+  lessonProgress LessonProgress[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Enrollment {
+  id       String @id @default(uuid())
+  userId   String
+  user     User   @relation(fields: [userId], references: [id])
+  courseId String
+  course   Course @relation(fields: [courseId], references: [id])
+
+  progress Int @default(0) // Percentage
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, courseId])
+}
+
+model Quiz {
+  id       String  @id @default(uuid())
+  title    String
+  lessonId String?
+  lesson   Lesson? @relation(fields: [lessonId], references: [id])
+
+  questions Json // Store questions structure as JSON for flexibility
+
+  results QuizResult[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model QuizResult {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  quizId String
+  quiz   Quiz   @relation(fields: [quizId], references: [id])
+
+  score  Int
+  passed Boolean
+
+  createdAt DateTime @default(now())
+}
+
+enum ServiceType {
+  PLATFORM_ONLY
+  PLATFORM_WITH_STUDIO
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model TeacherRequest {
+  id          String        @id @default(uuid())
+  name        String
+  email       String        @unique
+  phone       String
+  password    String
+  subject     String
+  grades      Json // Array of selected grades
+  domain      String // Requested subdomain/platform name
+  idCardUrl   String
+  serviceType ServiceType
+  status      RequestStatus @default(PENDING)
+
+  adminNotes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LessonProgress {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  lessonId    String
+  lesson      Lesson   @relation(fields: [lessonId], references: [id])
+  isCompleted Boolean  @default(false)
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, lessonId])
+}
+
+model Plan {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  price       Decimal  @default(0)
+  duration    Int      @default(30) // Duration in days (e.g. 30, 180, 365)
+  features    Json     // Array of strings representing plan features
+  isActive    Boolean  @default(true)
+  isPopular   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model LiveSession {
+  id          String     @id @default(uuid())
+  title       String
+  description String?
+  
+  teacherId   String
+  teacher     User       @relation(fields: [teacherId], references: [id])
+  courseId    String
+  course      Course     @relation(fields: [courseId], references: [id])
+  
+  scheduledAt DateTime
+  status      LiveStatus @default(SCHEDULED)
+  
+  roomId      String?    @unique
+  
+  tenantId    String
+  tenant      Tenant     @relation(fields: [tenantId], references: [id])
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model ProgrammingInstructor {
+  id             String   @id @default(uuid())
+  name           String
+  title          String   // e.g. "مهندس برمجيات - Full Stack Developer"
+  specialization String   // e.g. "Python | Django | React"
+  bio            String?  // Short description shown under photo
+  photoUrl       String?
+  skills         String[] // e.g. ["Python", "React", "Node.js"]
+  githubUrl      String?
+  linkedinUrl    String?
+  displayOrder   Int      @default(0)
+  isActive       Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
