@@ -455,7 +455,7 @@ export function DesignManager({ tenant, onUpdate }: { tenant: any, onUpdate: (t:
 
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-sm font-medium mb-1">رابط الشعار</label>
+                            <label className="block text-sm font-medium mb-1">رابط الشعار URL</label>
                             <input
                                 type="url" placeholder="https://..."
                                 className="w-full p-2 border rounded-lg text-sm"
@@ -463,6 +463,17 @@ export function DesignManager({ tenant, onUpdate }: { tenant: any, onUpdate: (t:
                             />
                         </div>
                         <div>
+                            <label className="block text-sm font-medium mb-1">رابط صورة الواجهة (الغلاف)</label>
+                            <input
+                                type="url" placeholder="https://..."
+                                className="w-full p-2 border rounded-lg text-sm"
+                                value={formData.heroImage} onChange={e => setFormData({ ...formData, heroImage: e.target.value })}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 mt-4">
+                        <div className="col-span-2">
                             <label className="block text-sm font-medium mb-1">نص الزر</label>
                             <input
                                 type="text"
