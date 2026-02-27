@@ -10,6 +10,7 @@ export default function TeacherWalletRequests() {
     const [loading, setLoading] = useState(true);
     const [processing, setProcessing] = useState<string | null>(null);
     const [vodafoneNumber, setVodafoneNumber] = useState('');
+    const [teacherCode, setTeacherCode] = useState('');
     const [savingNumber, setSavingNumber] = useState(false);
     const [filter, setFilter] = useState('ALL'); // ALL, PENDING, APPROVED, REJECTED
 
@@ -42,6 +43,7 @@ export default function TeacherWalletRequests() {
             try {
                 const numberData = await fetchAPI('/wallet/settings/vodafone/me');
                 setVodafoneNumber(numberData.number || '');
+                setTeacherCode(numberData.code || '');
             } catch (e) {
                 console.error("Failed to load vodafone settings", e);
             }
@@ -109,6 +111,17 @@ export default function TeacherWalletRequests() {
 
             {/* Vodafone Cash Number Settings */}
             <div className="bg-white dark:bg-slate-800 rounded-xl p-6 border border-slate-200 dark:border-slate-700 shadow-sm mb-8">
+                {teacherCode && (
+                    <div className="mb-6 p-4 bg-blue-50 dark:bg-slate-900 border border-blue-100 dark:border-slate-700 rounded-lg">
+                        <h4 className="font-bold text-blue-800 dark:text-blue-300 mb-1">كود المدرس الخاص بك</h4>
+                        <p className="text-sm text-blue-600 dark:text-blue-400">
+                            <strong>{teacherCode}</strong>
+                            <br />
+                            أعطِ هذا الكود للطلاب ليدخلوه عند شحن الرصيد لضمان وصول الطلب إليك مباشرةً.
+                        </p>
+                    </div>
+                )}
+
                 <h3 className="font-bold text-lg mb-4 text-slate-800 dark:text-white">رقم فودافون كاش للاستقبال</h3>
                 <div className="flex gap-4 max-w-md">
                     <input

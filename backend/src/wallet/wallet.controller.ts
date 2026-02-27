@@ -41,8 +41,8 @@ export class WalletController {
     @Post('deposit')
     @UseGuards(AuthGuard('jwt'))
     @UseInterceptors(FileInterceptor('proof', { storage }))
-    requestDeposit(@Request() req: any, @Body('amount') amount: string, @UploadedFile() file: Express.Multer.File) {
-        return this.walletService.requestDeposit(req.user.userId, parseFloat(amount), file ? `/uploads/receipts/${file.filename}` : null);
+    requestDeposit(@Request() req: any, @Body('amount') amount: string, @Body('tenantCode') tenantCode: string, @UploadedFile() file: Express.Multer.File) {
+        return this.walletService.requestDeposit(req.user.userId, parseFloat(amount), file ? `/uploads/receipts/${file.filename}` : null, tenantCode);
     }
 
     @Patch('approve/:id')

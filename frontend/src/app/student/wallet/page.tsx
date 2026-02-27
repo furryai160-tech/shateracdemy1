@@ -16,6 +16,8 @@ export default function StudentWalletPage() {
     const [mounted, setMounted] = useState(false);
     const [vodafoneNumber, setVodafoneNumber] = useState('');
 
+    const [teacherCode, setTeacherCode] = useState('');
+
     useEffect(() => {
         setMounted(true);
         loadWalletData();
@@ -43,6 +45,7 @@ export default function StudentWalletPage() {
         const formData = new FormData();
         formData.append('amount', amount);
         formData.append('proof', file);
+        if (teacherCode) formData.append('tenantCode', teacherCode);
 
         try {
             // Need to use fetch directly or update fetchAPI to handle FormData
@@ -108,6 +111,16 @@ export default function StudentWalletPage() {
                     )}
 
                     <form onSubmit={handleDeposit} className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-medium mb-1">كود المدرس (اختياري)</label>
+                            <input
+                                type="text"
+                                className="w-full px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900"
+                                placeholder="إذا كنت تتابع مع أكثر من مدرس، أدخل كوده هنا (مثل: mradel)"
+                                value={teacherCode}
+                                onChange={(e) => setTeacherCode(e.target.value)}
+                            />
+                        </div>
                         <div>
                             <label className="block text-sm font-medium mb-1">المبلغ (ج.م)</label>
                             <input

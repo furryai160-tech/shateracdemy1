@@ -15,10 +15,31 @@ export class WalletService {
         };
     }
 
-    async requestDeposit(userId: string, amount: number, proofUrl: string | null) {
+    async requestDeposit(userId: string, amount: number, proofUrl: string | null, tenantCode?: string) {
+        let tenantId = null;
+
+        if (tenantCode) {
+            // Find tenant by subdomain or ID
+            const tenant = await this.prisma.tenant.findFirst({
+                where: {
+                    OR: [
+                        { subdomain: tenantCode.toLowerCase() },
+                        { id: tenantCode }
+                    ]
+                }
+            });
+            if (!tenant) throw new BadRequestException('كود المدرس غير صحيح');
+            tenantId = tenant.id;
+        } else {
+            // Fallback to student's own tenantId if they are using subdomains
+            const user = await this.prisma.user.findUnique({ where: { id: userId } });
+            tenantId = user?.tenantId || null;
+        }
+
         return (this.prisma as any).walletTransaction.create({
             data: {
                 userId,
+                tenantId,
                 amount,
                 type: 'DEPOSIT',
                 status: 'PENDING',
@@ -43,17 +64,9 @@ export class WalletService {
 
         // If SUPER_ADMIN, show everything (no filter on tenant), or maybe keep it broad
         // If specific tenant (TEACHER), show their tenant OR unassigned (null)
-        if (user.role !== 'SUPER_ADMIN' && user.tenantId) {
-            where.user = {
-                tenantId: user.tenantId
-            };
-        } else if (user.role === 'SUPER_ADMIN') {
-            // For Super Admin, we want to see EVERYTHING, perhaps?
-            // Or maybe they still only want to see their tenant...
-            // "Everything" is safer.
-        } else if (!user.tenantId) {
-            // Admin without tenant? Show all unassigned? Or everything?
-            // Let's assume they want to see everything if no tenant restriction is applicable
+        if (user.role !== 'SUPER_ADMIN') {
+            // Strictly filter by the teacher's tenantId. If they don't have one, they see nothing.
+            where.tenantId = user.tenantId || 'UNASSIGNED_TENANT';
         }
 
         console.log('Querying with where:', JSON.stringify(where, null, 2));
@@ -206,11 +219,11 @@ export class WalletService {
     async getVodafoneCashNumber(tenantId?: string) {
         if (!tenantId) {
             const tenant = await this.prisma.tenant.findFirst();
-            return { number: (tenant as any)?.vodafoneCashNumber || '' };
+            return { number: (tenant as any)?.vodafoneCashNumber || '', code: (tenant as any)?.subdomain || '' };
         }
 
         const tenant = await this.prisma.tenant.findUnique({ where: { id: tenantId } });
-        return { number: (tenant as any)?.vodafoneCashNumber || '' };
+        return { number: (tenant as any)?.vodafoneCashNumber || '', code: (tenant as any)?.subdomain || '' };
     }
 }
 

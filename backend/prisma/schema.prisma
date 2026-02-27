@@ -62,6 +62,7 @@ model Tenant {
   users        User[]
   courses      Course[]
   liveSessions LiveSession[]
+  walletTransactions WalletTransaction[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -104,6 +105,9 @@ model WalletTransaction {
   user   User   @relation(fields: [userId], references: [id])
 
   courseId String? // For purchases
+
+  tenantId String? // Target Teacher/Platform for Deposit
+  tenant   Tenant? @relation(fields: [tenantId], references: [id])
 
   adminNote String? // Reason for rejection or admin comment
 
