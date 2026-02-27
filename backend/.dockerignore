@@ -1,0 +1,22 @@
+node_modules
+dist
+.env
+.env.local
+.git
+.gitignore
+*.log
+npm-debug.log*
+coverage
+.dockerignore
+README.md
+
+# Test files
+test
+*.spec.ts
+
+# Temporary fix scripts
+fix-*.js
+test-*.js
+dump.js
+check_db.ts
+test_query.ts
