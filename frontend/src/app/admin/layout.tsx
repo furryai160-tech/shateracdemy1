@@ -19,7 +19,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { icon: Users, label: 'Users', href: '/admin/users' },
         { icon: BookOpen, label: 'Courses', href: '/admin/courses' },
         { icon: BookOpen, label: 'Plans', href: '/admin/plans' },
-        { icon: Code2, label: 'صفحة البرمجة', href: '/admin/programming' },
         { icon: Settings, label: 'Settings', href: '/admin/settings' },
     ];
 
