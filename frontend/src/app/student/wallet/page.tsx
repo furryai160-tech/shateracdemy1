@@ -47,7 +47,9 @@ export default function StudentWalletPage() {
         try {
             // Need to use fetch directly or update fetchAPI to handle FormData
             const token = localStorage.getItem('token');
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}/wallet/deposit`, {
+            const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+            const apiUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+            const response = await fetch(`${apiUrl}/wallet/deposit`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`

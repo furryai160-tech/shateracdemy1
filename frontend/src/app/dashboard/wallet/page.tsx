@@ -177,7 +177,7 @@ export default function TeacherWalletRequests() {
                                         <td className="p-4">
                                             {req.proofUrl ? (
                                                 <a
-                                                    href={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}${req.proofUrl}`}
+                                                    href={`${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000').endsWith('/') ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000').slice(0, -1) : (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000')}${req.proofUrl}`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="inline-flex items-center gap-1 text-blue-600 hover:underline text-sm"

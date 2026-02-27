@@ -52,7 +52,8 @@ export function EditLessonModal({ lesson, isOpen, onClose, onUpdate }: EditLesso
             }, 300);
 
             // Use the API_URL from env or default
-            const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+            const rawApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+            const API_URL = rawApiUrl.endsWith('/') ? rawApiUrl.slice(0, -1) : rawApiUrl;
 
             const response = await fetch(`${API_URL}/uploads`, {
                 method: 'POST',
