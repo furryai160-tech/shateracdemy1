@@ -10,7 +10,7 @@ export default function TermsPage() {
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-3 group">
                         <Image
-                            src="../../public/logo.jpg"
+                            src="/logo.jpg"
                             alt="الشاطر أكاديمي"
                             width={40}
                             height={40}
