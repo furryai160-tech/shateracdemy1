@@ -1,5 +1,5 @@
 
-import { Controller, Get, Post, Body, Param, Patch, UseGuards, Request, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards, Request, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { WalletService } from './wallet.service';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -91,5 +91,24 @@ export class WalletController {
         // Public endpoint - fetch by tenantId query param or fall back to first tenant
         const tenantId = req.query?.tenantId;
         return this.walletService.getVodafoneCashNumber(tenantId);
+    }
+
+    /**
+     * SUPER_ADMIN only: Delete a specific wallet transaction (for cleaning up bad data)
+     */
+    @Delete('requests/:id')
+    @UseGuards(AuthGuard('jwt'))
+    deleteRequest(@Request() req: any, @Param('id') id: string) {
+        return this.walletService.deleteRequest(req.user, id);
+    }
+
+    /**
+     * SUPER_ADMIN only: Clean up orphaned transactions (no tenantId or mismatched tenantId)
+     * DELETE /wallet/admin/cleanup-orphans
+     */
+    @Delete('admin/cleanup-orphans')
+    @UseGuards(AuthGuard('jwt'))
+    cleanupOrphanTransactions(@Request() req: any) {
+        return this.walletService.cleanupOrphanTransactions(req.user);
     }
 }

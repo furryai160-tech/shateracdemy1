@@ -64,17 +64,22 @@ export class WalletService {
         const user = await this.prisma.user.findUnique({ where: { id: userPayload.userId } });
         if (!user) throw new BadRequestException('User not found');
 
-        // Remove status: 'PENDING' to show history too
+        // Build where clause
         const where: any = { type: 'DEPOSIT' };
 
-        // If SUPER_ADMIN, show everything (no filter on tenant), or maybe keep it broad
-        // If specific tenant (TEACHER), show their tenant OR unassigned (null)
         if (user.role !== 'SUPER_ADMIN') {
-            // Strictly filter by the teacher's tenantId. If they don't have one, they see nothing.
+            // If teacher has no tenantId, force zero results
             if (!user.tenantId) {
-                where.tenantId = 'NO_TENANT_ASSIGNED'; // Forces zero results
+                where.id = 'NO_RESULTS_PLACEHOLDER';
             } else {
+                // DOUBLE FILTER:
+                // 1) The transaction itself must have the teacher's tenantId
+                // 2) The student who made the request must ALSO belong to the same tenant
+                // This prevents old/orphaned transactions from leaking into other teachers' views
                 where.tenantId = user.tenantId;
+                where.user = {
+                    tenantId: user.tenantId,
+                };
             }
         }
 
@@ -237,5 +242,63 @@ export class WalletService {
         const tenant = await this.prisma.tenant.findUnique({ where: { id: tenantId } });
         return { number: (tenant as any)?.vodafoneCashNumber || '', code: (tenant as any)?.subdomain || '' };
     }
+
+    /**
+     * SUPER_ADMIN only: Delete a specific wallet transaction
+     */
+    async deleteRequest(userPayload: any, requestId: string) {
+        const user = await this.prisma.user.findUnique({ where: { id: userPayload.userId } });
+        if (!user || user.role !== 'SUPER_ADMIN') {
+            throw new BadRequestException('غير مصرح – هذه العملية للأدمن الرئيسي فقط');
+        }
+        await (this.prisma as any).walletTransaction.delete({ where: { id: requestId } });
+        return { message: 'تم حذف الطلب بنجاح' };
+    }
+
+    /**
+     * SUPER_ADMIN only: Delete orphaned/invalid wallet transactions:
+     * - Transactions with tenantId = null
+     * - Transactions where the student's tenantId doesn't match the transaction's tenantId
+     */
+    async cleanupOrphanTransactions(userPayload: any) {
+        const user = await this.prisma.user.findUnique({ where: { id: userPayload.userId } });
+        if (!user || user.role !== 'SUPER_ADMIN') {
+            throw new BadRequestException('غير مصرح – هذه العملية للأدمن الرئيسي فقط');
+        }
+
+        // 1. Delete transactions with no tenantId
+        const noTenant = await (this.prisma as any).walletTransaction.deleteMany({
+            where: {
+                type: 'DEPOSIT',
+                tenantId: null,
+            }
+        });
+
+        // 2. Delete transactions where student's tenantId doesn't match transaction tenantId
+        // We do this via raw query since Prisma doesn't support cross-field joins in deleteMany
+        const allDeposits = await (this.prisma as any).walletTransaction.findMany({
+            where: { type: 'DEPOSIT', tenantId: { not: null } },
+            include: { user: { select: { tenantId: true } } }
+        });
+
+        const mismatchedIds = allDeposits
+            .filter((tx: any) => tx.user?.tenantId !== tx.tenantId)
+            .map((tx: any) => tx.id);
+
+        let mismatchDeleted = { count: 0 };
+        if (mismatchedIds.length > 0) {
+            mismatchDeleted = await (this.prisma as any).walletTransaction.deleteMany({
+                where: { id: { in: mismatchedIds } }
+            });
+        }
+
+        return {
+            message: 'تم تنظيف البيانات القديمة الغلط',
+            deletedNoTenant: noTenant.count,
+            deletedMismatched: mismatchDeleted.count,
+            total: noTenant.count + mismatchDeleted.count,
+        };
+    }
 }
+
 
