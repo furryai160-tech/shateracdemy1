@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, ShieldCheck, Scale, FileText } from 'lucide-react';
 
 export default function TermsPage() {
@@ -8,9 +9,13 @@ export default function TermsPage() {
             <nav className="border-b border-white/5 bg-slate-950/80 backdrop-blur-xl sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-3 group">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/20">
-                            ش
-                        </div>
+                        <Image
+                            src="/logo.jpg"
+                            alt="الشاطر أكاديمي"
+                            width={40}
+                            height={40}
+                            className="rounded-xl shadow-lg shadow-indigo-500/20"
+                        />
                         <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400">
                             المنصة التعليمية
                         </span>

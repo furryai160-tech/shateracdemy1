@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
     PlayCircle,
@@ -79,8 +80,8 @@ export default function MainLandingPage() {
             <nav className="border-b border-white/5 bg-[#0B1120]/60 backdrop-blur-xl sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-white/5 border border-white/10 flex items-center justify-center">
-                            <span className="text-xl font-bold text-orange-500">ش</span>
+                        <div className="relative w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center">
+                            <Image src="/logo.jpg" alt="الشاطر أكاديمي" width={48} height={48} className="object-cover" />
                         </div>
                         <span className="text-2xl font-extrabold text-white tracking-tight">
                             الشاطر <span className="text-orange-500">أكاديمي</span>
@@ -932,8 +933,8 @@ export default function MainLandingPage() {
                     <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
                         <div className="flex flex-col gap-6">
                             <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-xl bg-orange-500 flex items-center justify-center border border-orange-400">
-                                    <span className="text-xl font-bold text-white">ش</span>
+                                <div className="w-10 h-10 rounded-xl bg-orange-500 overflow-hidden flex items-center justify-center border border-orange-400">
+                                    <Image src="/logo.jpg" alt="الشاطر أكاديمي" width={40} height={40} className="object-cover" />
                                 </div>
                                 <span className="text-2xl font-bold text-white">الشاطر <span className="text-orange-500">أكاديمي</span></span>
                             </div>

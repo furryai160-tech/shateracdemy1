@@ -43,7 +43,7 @@ export default async function TenantPage({ params }: { params: { subdomain: stri
     }
 
     // استخدم الـ theme_color من قاعدة البيانات أو وضع لون افتراضي
-    const themeColor = tenant.theme_color || '#ffffff';
+    const themeColor = tenant.theme_color || '#d81a1aff';
 
     return (
         <div style={{ backgroundColor: themeColor, minHeight: '100vh' }}>
