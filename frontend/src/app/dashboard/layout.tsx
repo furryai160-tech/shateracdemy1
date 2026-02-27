@@ -63,7 +63,6 @@ export default function DashboardLayout({
         { icon: Wallet, label: 'المحفظة والطلبات', href: '/dashboard/wallet' },
         { icon: Video, label: 'جلسات مباشرة', href: '/dashboard/live' },
         { icon: BarChart3, label: 'التحليلات', href: '/dashboard/analytics' },
-        { icon: Settings, label: 'الإعدادات', href: '/dashboard/settings' },
     ];
 
     return (
