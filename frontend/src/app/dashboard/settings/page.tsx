@@ -15,7 +15,7 @@ export default function SettingsPage() {
 
     const loadSettings = async () => {
         try {
-            const data = await fetchAPI('/wallet/settings/vodafone');
+            const data = await fetchAPI('/wallet/settings/vodafone/me');
             setVodafoneNumber(data.number || '');
         } catch (error) {
             console.error(error);

@@ -40,7 +40,7 @@ export default function TeacherWalletRequests() {
 
 
             try {
-                const numberData = await fetchAPI('/wallet/settings/vodafone');
+                const numberData = await fetchAPI('/wallet/settings/vodafone/me');
                 setVodafoneNumber(numberData.number || '');
             } catch (e) {
                 console.error("Failed to load vodafone settings", e);

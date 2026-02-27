@@ -79,6 +79,13 @@ export class WalletController {
         return this.walletService.setVodafoneCashNumber(req.user.userId, number);
     }
 
+    @Get('settings/vodafone/me')
+    @UseGuards(AuthGuard('jwt'))
+    async getMyVodafoneNumber(@Request() req: any) {
+        const user = await this.walletService['prisma'].user.findUnique({ where: { id: req.user.userId } });
+        return this.walletService.getVodafoneCashNumber(user?.tenantId || undefined);
+    }
+
     @Get('settings/vodafone')
     getVodafoneCashNumber(@Request() req: any) {
         // Public endpoint - fetch by tenantId query param or fall back to first tenant

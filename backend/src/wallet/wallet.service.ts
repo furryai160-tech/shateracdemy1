@@ -44,15 +44,9 @@ export class WalletService {
         // If SUPER_ADMIN, show everything (no filter on tenant), or maybe keep it broad
         // If specific tenant (TEACHER), show their tenant OR unassigned (null)
         if (user.role !== 'SUPER_ADMIN' && user.tenantId) {
-            /* 
-            // TEMPORARY: Disable filter to debug missing requests
             where.user = {
-                OR: [
-                    { tenantId: user.tenantId },
-                    { tenantId: null }
-                ]
+                tenantId: user.tenantId
             };
-            */
         } else if (user.role === 'SUPER_ADMIN') {
             // For Super Admin, we want to see EVERYTHING, perhaps?
             // Or maybe they still only want to see their tenant...

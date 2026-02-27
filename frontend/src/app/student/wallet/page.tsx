@@ -25,7 +25,7 @@ export default function StudentWalletPage() {
         try {
             const data = await fetchAPI('/wallet/balance');
             const history = await fetchAPI('/wallet/transactions');
-            const numberData = await fetchAPI('/wallet/settings/vodafone');
+            const numberData = await fetchAPI('/wallet/settings/vodafone/me');
             setBalance({ balance: data.balance, transactions: history });
             setVodafoneNumber(numberData.number);
         } catch (error) {
