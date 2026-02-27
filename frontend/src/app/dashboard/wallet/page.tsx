@@ -13,6 +13,8 @@ export default function TeacherWalletRequests() {
     const [teacherCode, setTeacherCode] = useState('');
     const [savingNumber, setSavingNumber] = useState(false);
     const [filter, setFilter] = useState('ALL'); // ALL, PENDING, APPROVED, REJECTED
+    const [isSuperAdmin, setIsSuperAdmin] = useState(false);
+    const [mounted, setMounted] = useState(false);
 
     const filteredRequests = requests.filter(req => {
         if (filter === 'ALL') return true;
@@ -22,8 +24,18 @@ export default function TeacherWalletRequests() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        setMounted(true);
+        // Read role from localStorage to decide which columns to show
+        try {
+            const raw = localStorage.getItem('user');
+            if (raw) {
+                const u = JSON.parse(raw);
+                setIsSuperAdmin(u?.role === 'SUPER_ADMIN');
+            }
+        } catch (_) { }
         loadData();
     }, []);
+
 
     const loadData = async () => {
         setLoading(true);
@@ -93,7 +105,7 @@ export default function TeacherWalletRequests() {
         }
     };
 
-    if (loading) return <div className="p-12 flex justify-center"><Loader2 className="animate-spin text-blue-600" /></div>;
+    if (loading || !mounted) return <div className="p-12 flex justify-center"><Loader2 className="animate-spin text-blue-600" /></div>;
 
     if (error) return (
         <div className="p-6 max-w-6xl mx-auto" dir="rtl">
@@ -168,7 +180,7 @@ export default function TeacherWalletRequests() {
                             <thead className="bg-slate-50 dark:bg-slate-900/50 text-slate-500 text-sm">
                                 <tr>
                                     <th className="p-4 font-medium">اسم الطالب</th>
-                                    <th className="p-4 font-medium">المدرس / المنصة</th>
+                                    {isSuperAdmin && <th className="p-4 font-medium">المدرس / المنصة</th>}
                                     <th className="p-4 font-medium">المبلغ</th>
                                     <th className="p-4 font-medium">تاريخ الطلب</th>
                                     <th className="p-4 font-medium">الإيصال</th>
@@ -182,14 +194,16 @@ export default function TeacherWalletRequests() {
                                             <p className="font-bold text-slate-800 dark:text-white">{req.user?.name || 'غير معروف'}</p>
                                             <p className="text-xs text-slate-500">{req.user?.phone}</p>
                                         </td>
-                                        <td className="p-4">
-                                            <p className="font-bold text-slate-800 dark:text-slate-200">
-                                                {req.tenant?.name || 'غير محدد (مباشر)'}
-                                            </p>
-                                            {req.tenant?.subdomain && (
-                                                <p className="text-xs text-slate-400">@{req.tenant.subdomain}</p>
-                                            )}
-                                        </td>
+                                        {isSuperAdmin && (
+                                            <td className="p-4">
+                                                <p className="font-bold text-slate-800 dark:text-slate-200">
+                                                    {req.tenant?.name || 'غير محدد'}
+                                                </p>
+                                                {req.tenant?.subdomain && (
+                                                    <p className="text-xs text-slate-400">@{req.tenant.subdomain}</p>
+                                                )}
+                                            </td>
+                                        )}
                                         <td className="p-4">
                                             <span className="font-bold text-green-600">+{req.amount} ج.م</span>
                                         </td>
