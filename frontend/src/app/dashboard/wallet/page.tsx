@@ -168,6 +168,7 @@ export default function TeacherWalletRequests() {
                             <thead className="bg-slate-50 dark:bg-slate-900/50 text-slate-500 text-sm">
                                 <tr>
                                     <th className="p-4 font-medium">اسم الطالب</th>
+                                    <th className="p-4 font-medium">المدرس / المنصة</th>
                                     <th className="p-4 font-medium">المبلغ</th>
                                     <th className="p-4 font-medium">تاريخ الطلب</th>
                                     <th className="p-4 font-medium">الإيصال</th>
@@ -180,6 +181,14 @@ export default function TeacherWalletRequests() {
                                         <td className="p-4">
                                             <p className="font-bold text-slate-800 dark:text-white">{req.user?.name || 'غير معروف'}</p>
                                             <p className="text-xs text-slate-500">{req.user?.phone}</p>
+                                        </td>
+                                        <td className="p-4">
+                                            <p className="font-bold text-slate-800 dark:text-slate-200">
+                                                {req.tenant?.name || 'غير محدد (مباشر)'}
+                                            </p>
+                                            {req.tenant?.subdomain && (
+                                                <p className="text-xs text-slate-400">@{req.tenant.subdomain}</p>
+                                            )}
                                         </td>
                                         <td className="p-4">
                                             <span className="font-bold text-green-600">+{req.amount} ج.م</span>

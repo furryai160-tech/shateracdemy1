@@ -57,8 +57,13 @@ export class WalletService {
     }
 
     // Admin: Get all requests (Pending & History)
-    async getPendingRequests(user: any) {
-        console.log('getPendingRequests called with user:', user);
+    async getPendingRequests(userPayload: any) {
+        console.log('getPendingRequests called with user payload:', userPayload);
+
+        // Always fetch user from DB to ensure fresh role and tenantId (fixes cached JWT issues)
+        const user = await this.prisma.user.findUnique({ where: { id: userPayload.userId } });
+        if (!user) throw new BadRequestException('User not found');
+
         // Remove status: 'PENDING' to show history too
         const where: any = { type: 'DEPOSIT' };
 
@@ -66,7 +71,11 @@ export class WalletService {
         // If specific tenant (TEACHER), show their tenant OR unassigned (null)
         if (user.role !== 'SUPER_ADMIN') {
             // Strictly filter by the teacher's tenantId. If they don't have one, they see nothing.
-            where.tenantId = user.tenantId || 'UNASSIGNED_TENANT';
+            if (!user.tenantId) {
+                where.tenantId = 'NO_TENANT_ASSIGNED'; // Forces zero results
+            } else {
+                where.tenantId = user.tenantId;
+            }
         }
 
         console.log('Querying with where:', JSON.stringify(where, null, 2));
@@ -76,12 +85,15 @@ export class WalletService {
             include: {
                 user: {
                     select: { id: true, name: true, email: true, phone: true }
+                },
+                tenant: {
+                    select: { name: true, subdomain: true } // Include so the frontend knows whose transaction this is
                 }
             },
             orderBy: { createdAt: 'desc' }
         });
 
-        console.log('Found requests:', results.length);
+        console.log(`Found requests: ${results.length} for user role: ${user.role} and tenant: ${user.tenantId}`);
         return results;
     }
 
