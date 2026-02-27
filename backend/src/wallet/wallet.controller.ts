@@ -73,12 +73,8 @@ export class WalletController {
         return this.walletService.adminCredit(req.user, userId, Number(amount));
     }
 
-    @Post('settings/vodafone')
-    @UseGuards(AuthGuard('jwt'))
-    setVodafoneCashNumber(@Request() req: any, @Body('number') number: string) {
-        return this.walletService.setVodafoneCashNumber(req.user.userId, number);
-    }
-
+    // ⚠️ IMPORTANT: Keep /me route BEFORE the general /settings/vodafone route
+    // NestJS/Express matches routes in registration order — specific must come first
     @Get('settings/vodafone/me')
     @UseGuards(AuthGuard('jwt'))
     async getMyVodafoneNumber(@Request() req: any) {
@@ -86,9 +82,15 @@ export class WalletController {
         return this.walletService.getVodafoneCashNumber(user?.tenantId || undefined);
     }
 
+    @Post('settings/vodafone')
+    @UseGuards(AuthGuard('jwt'))
+    setVodafoneCashNumber(@Request() req: any, @Body('number') number: string) {
+        return this.walletService.setVodafoneCashNumber(req.user.userId, number);
+    }
+
+    // Public endpoint — MUST come after /settings/vodafone/me
     @Get('settings/vodafone')
     getVodafoneCashNumber(@Request() req: any) {
-        // Public endpoint - fetch by tenantId query param or fall back to first tenant
         const tenantId = req.query?.tenantId;
         return this.walletService.getVodafoneCashNumber(tenantId);
     }

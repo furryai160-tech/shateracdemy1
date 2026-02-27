@@ -27,14 +27,21 @@ export default function StudentWalletPage() {
         try {
             const data = await fetchAPI('/wallet/balance');
             const history = await fetchAPI('/wallet/transactions');
-            const numberData = await fetchAPI('/wallet/settings/vodafone/me');
             setBalance({ balance: data.balance, transactions: history });
-            setVodafoneNumber(numberData.number);
         } catch (error) {
-            console.error("Failed to load wallet", error);
-        } finally {
-            setLoading(false);
+            console.error("Failed to load wallet balance/history", error);
         }
+
+        // Fetch vodafone number separately so it doesn't block the rest
+        try {
+            const numberData = await fetchAPI('/wallet/settings/vodafone/me');
+            setVodafoneNumber(numberData?.number || '');
+        } catch (error) {
+            console.error("Failed to load vodafone settings", error);
+            // Non-critical: vodafone number just won't show
+        }
+
+        setLoading(false);
     };
 
     const handleDeposit = async (e: React.FormEvent) => {
