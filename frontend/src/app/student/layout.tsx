@@ -32,13 +32,15 @@ export default function StudentDashboardLayout({
             <aside className={`fixed md:relative inset-y-0 right-0 w-64 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 z-50 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
                 <div className="p-6 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2">
-                        <Image
-                            src="/logo.png"
-                            alt="شاطر أكاديمي"
-                            width={36}
-                            height={36}
-                            className="rounded-lg object-contain"
-                        />
+                        <div className="w-10 h-10 bg-white rounded-full overflow-hidden flex items-center justify-center border border-slate-100 dark:border-slate-800 shadow-sm shrink-0">
+                            <Image
+                                src="/logo.jpg"
+                                alt="شاطر أكاديمي"
+                                width={36}
+                                height={36}
+                                className="object-cover mix-blend-multiply dark:mix-blend-normal"
+                            />
+                        </div>
                         <span className="font-bold text-lg dark:text-white">الشاطر أكاديمي</span>
                     </Link>
                     <button onClick={() => setMobileMenuOpen(false)} className="md:hidden p-1 text-slate-500">

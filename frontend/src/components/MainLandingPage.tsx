@@ -80,7 +80,7 @@ export default function MainLandingPage() {
             <nav className="border-b border-white/5 bg-[#0B1120]/60 backdrop-blur-xl sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="relative w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center">
+                        <div className="relative w-12 h-12 rounded-full bg-white overflow-hidden flex items-center justify-center shadow-lg shadow-orange-500/10">
                             <Image src="/logo.jpg" alt="الشاطر أكاديمي" width={48} height={48} className="object-cover" />
                         </div>
                         <span className="text-2xl font-extrabold text-white tracking-tight">
@@ -503,7 +503,7 @@ export default function MainLandingPage() {
                                 .map((teacher, idx) => (
                                     <motion.a
                                         key={teacher.id}
-                                        href={`http://${teacher.subdomain}.${typeof window !== 'undefined' ? window.location.hostname : 'localhost:3000'}`}
+                                        href={`${typeof window !== 'undefined' && window.location.hostname !== 'localhost' ? 'https' : 'http'}://${teacher.subdomain}.${typeof window !== 'undefined' ? window.location.host.replace('www.', '') : 'localhost:3000'}`}
                                         initial={{ opacity: 0, y: 30 }}
                                         whileInView={{ opacity: 1, y: 0 }}
                                         viewport={{ once: true }}

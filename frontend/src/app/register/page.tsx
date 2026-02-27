@@ -34,12 +34,6 @@ export default function RegisterPage() {
         }
     };
 
-    const generateDomain = () => {
-        if (!formData.name) return;
-        const slug = formData.name.toLowerCase().replace(/\s+/g, '-') + '-' + Math.floor(Math.random() * 1000);
-        setFormData({ ...formData, domain: slug });
-    };
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
@@ -67,7 +61,7 @@ export default function RegisterPage() {
                     password: formData.password,
                     subject: formData.subject,
                     grades: selectedGrades,
-                    domain: formData.domain,
+                    domain: formData.domain || `user-${Date.now()}`,
                     idCardUrl: 'https://placehold.co/600x400', // Default placeholder as field is removed
                     serviceType: formData.serviceType
                 }),
@@ -240,38 +234,6 @@ export default function RegisterPage() {
                                     </label>
                                 </div>
                             </div>
-                        </div>
-
-                        <div className="space-y-4">
-                            <h3 className="text-sm font-bold uppercase text-slate-400 tracking-wider text-right">إعداد المنصة</h3>
-
-                            <div>
-                                <label className="block text-sm font-medium mb-1.5 text-right">رابط منصتك (Subdomain)</label>
-                                <div className="flex flex-row-reverse gap-2">
-                                    <div className="relative flex-1" dir="ltr">
-                                        <div className="flex items-center border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 transition-all">
-                                            <span className="pl-4 text-slate-500 font-medium">alshateracademy.com/</span>
-                                            <input
-                                                type="text"
-                                                required
-                                                className="w-full py-3 px-2 bg-transparent outline-none font-bold text-indigo-600 placeholder-indigo-300"
-                                                placeholder="mr-ahmed"
-                                                value={formData.domain}
-                                                onChange={(e) => setFormData({ ...formData, domain: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '') })}
-                                            />
-                                        </div>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        onClick={generateDomain}
-                                        className="px-4 py-2 bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600 dark:text-indigo-400 rounded-xl font-bold text-sm hover:bg-indigo-100 transition-colors whitespace-nowrap"
-                                    >
-                                        اقتراح اسم
-                                    </button>
-                                </div>
-                                <p className="text-xs text-slate-400 mt-2 text-right">سيكون هذا هو الرابط الذي يشاركه طلابك للوصول إلى محتواك.</p>
-                            </div>
-
                         </div>
 
                         <div className="space-y-4">

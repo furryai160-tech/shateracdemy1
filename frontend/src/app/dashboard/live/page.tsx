@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Video, Plus, Calendar, Clock, Trash2, Tag, Play } from 'lucide-react';
 import Link from 'next/link';
-import { fetchAPI } from '../../../lib/api';
+import { fetchAPI } from '@/lib/api';
 
 // Types for Live Session
 interface LiveSession {

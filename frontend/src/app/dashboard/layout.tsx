@@ -77,13 +77,15 @@ export default function DashboardLayout({
                         className="bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 flex flex-col shrink-0 relative z-30 shadow-xl md:shadow-none h-full md:relative absolute right-0"
                     >
                         <div className="h-20 flex items-center gap-3 px-6 border-b border-slate-100 dark:border-slate-800">
-                            <Image
-                                src="/logo.png"
-                                alt="شاطر أكاديمي"
-                                width={40}
-                                height={40}
-                                className="rounded-xl object-contain"
-                            />
+                            <div className="w-10 h-10 bg-white rounded-full overflow-hidden flex items-center justify-center border border-slate-100 dark:border-slate-800 shadow-sm shrink-0">
+                                <Image
+                                    src="/logo.jpg"
+                                    alt="شاطر أكاديمي"
+                                    width={40}
+                                    height={40}
+                                    className="object-cover mix-blend-multiply dark:mix-blend-normal"
+                                />
+                            </div>
                             <div>
                                 <h1 className="font-bold text-lg tracking-tight">الشاطر أكاديمي</h1>
                                 <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">لوحة المعلم</p>

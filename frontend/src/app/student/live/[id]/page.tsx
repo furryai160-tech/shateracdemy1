@@ -1,9 +1,9 @@
 'use client';
 
 import { use, useState, useEffect } from 'react';
-import { SecureLivePlayer } from '@/components/student/SecureLivePlayer';
-import { LiveChat } from '@/components/LiveChat/LiveChat';
-import { fetchAPI } from '@/lib/api';
+import { SecureLivePlayer } from '../../../../components/student/SecureLivePlayer';
+import { LiveChat } from '../../../../components/LiveChat/LiveChat';
+import { fetchAPI } from '../../../../lib/api';
 import { Loader2 } from 'lucide-react';
 
 export default function LiveRoomPage({ params }: { params: Promise<{ id: string }> }) {

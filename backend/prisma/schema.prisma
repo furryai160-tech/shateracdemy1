@@ -309,3 +309,13 @@ model ProgrammingInstructor {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model LiveLesson {
+  id        String   @id @default(uuid())
+  title     String
+  youtubeId String   @map("youtube_id")
+  isLive    Boolean  @default(false) @map("is_live")
+  createdAt DateTime @default(now()) @map("create_at")
+
+  @@map("live_lessons")
+}
