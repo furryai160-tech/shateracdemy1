@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import {
     Users, BookOpen, DollarSign, TrendingUp,
-    Activity, Check, X, Calendar, Server, MoreHorizontal, Loader2, Search, Trash2, AlertTriangle
+    Activity, Check, X, Calendar, Server, MoreHorizontal, Loader2, Search, Trash2
 } from 'lucide-react';
 import { fetchAPI } from '../../lib/api';
 import { format } from 'date-fns';
@@ -69,24 +69,6 @@ export default function AdminDashboard() {
         setActivatingTenant(null);
     };
 
-    const handleFactoryReset = async () => {
-        const confirm1 = confirm("⚠ تحذير خطير: هل أنت متأكد من مسح المنصة بالكامل؟ (بما في ذلك الطلاب والمدرسين والكورسات) \n\n* هذا الإجراء لا يمكن التراجع عنه!");
-        if (!confirm1) return;
-
-        const confirm2 = confirm("⚠ تأكيد نهائي: سيتم حذف جميع بيانات النظام باستثناء حساب الآدمن الرئيسي. هل تود الاستمرار؟");
-        if (!confirm2) return;
-
-        try {
-            const res = await fetchAPI('/admin/factory-reset', { method: 'DELETE' });
-            alert(res.message || 'تم مسح المنصة بنجاح وإعادتها لحالة المصنع.');
-            loadData(); // clear out data in UI
-            window.location.reload(); // Hard reload
-        } catch (error: any) {
-            console.error(error);
-            alert(error.message || "فشلت عملية مسح المنصة.");
-        }
-    };
-
     if (loading) {
         return (
             <div className="flex items-center justify-center h-full">
@@ -131,15 +113,6 @@ export default function AdminDashboard() {
 
             {activeTab === 'overview' && (
                 <>
-                    <div className="flex justify-start mb-6">
-                        <button
-                            onClick={handleFactoryReset}
-                            className="bg-red-50 hover:bg-red-100 border border-red-200 text-red-700 px-6 py-3 rounded-xl flex items-center gap-3 font-bold transition-all shadow-sm group"
-                        >
-                            <AlertTriangle className="group-hover:animate-pulse" size={20} />
-                            استعادة ضبط المصنع (مسح كل شيء)
-                        </button>
-                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                         <StatCard title="إجمالي المعلمين" value={stats?.totalUsers || 0} icon={Users} color="bg-blue-500" />
                         <StatCard title="الكورسات النشطة" value={stats?.totalCourses || 0} icon={BookOpen} color="bg-violet-500" />

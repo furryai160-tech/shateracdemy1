@@ -325,7 +325,6 @@ export class AdminService {
         await this.prisma.lessonProgress.deleteMany({ where: { user: { tenantId } } });
         await this.prisma.walletTransaction.deleteMany({ where: { user: { tenantId } } });
         await this.prisma.lesson.deleteMany({ where: { course: { tenantId } } });
-        await this.prisma.liveSession.deleteMany({ where: { tenantId } });
         await this.prisma.course.deleteMany({ where: { tenantId } });
         await this.prisma.user.deleteMany({ where: { tenantId } });
         return this.prisma.tenant.delete({ where: { id: tenantId } });
