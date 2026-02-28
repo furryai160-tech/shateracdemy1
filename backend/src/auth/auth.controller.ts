@@ -12,11 +12,14 @@ export class AuthController {
         try {
             const user = await this.authService.validateUser(loginDto.email, loginDto.password);
             if (!user) {
-                throw new UnauthorizedException('Invalid credentials');
+                throw new UnauthorizedException('فشل تسجيل الدخول، أو الحساب مش موجود لازم حساب يا مستر ❤️');
             }
             return this.authService.login(user);
         } catch (error: any) {
             console.error('Login error:', error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new HttpException(error.message + ' \n ' + error.stack, 500);
         }
     }
