@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import {
     Users, BookOpen, DollarSign, TrendingUp,
-    Activity, Check, X, Calendar, Server, MoreHorizontal, Loader2, Search
+    Activity, Check, X, Calendar, Server, MoreHorizontal, Loader2, Search, Trash2
 } from 'lucide-react';
 import { fetchAPI } from '../../lib/api';
 import { format } from 'date-fns';
@@ -279,6 +279,19 @@ function InstructorsTab() {
         }
     };
 
+    const handleDelete = async (id: string, name: string) => {
+        if (!confirm(`هل أنت متأكد من حذف المنصة الخاصة بالمعلم ${name}؟ هذا الإجراء لا يمكن التراجع عنه وسيتم مسح كل بياناته.`)) return;
+
+        try {
+            await fetchAPI(`/admin/tenants/${id}/delete`, { method: 'POST' });
+            loadInstructors();
+            alert('تم مسح المنصة بنجاح.');
+        } catch (error: any) {
+            console.error(error);
+            alert(error.message || 'فشل مسح المنصة.');
+        }
+    };
+
     const toggleGrade = (grade: string) => {
         if (formData.grades.includes(grade)) {
             setFormData({ ...formData, grades: formData.grades.filter(g => g !== grade) });
@@ -341,12 +354,21 @@ function InstructorsTab() {
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 text-left">
-                                    <a
-                                        href={`/admin/tenants/${instructor.id}`}
-                                        className="text-indigo-600 hover:text-indigo-800 font-bold text-sm bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100 hover:bg-indigo-100 transition-colors"
-                                    >
-                                        إدارة
-                                    </a>
+                                    <div className="flex items-center gap-2 justify-end">
+                                        <a
+                                            href={`/admin/tenants/${instructor.id}`}
+                                            className="text-indigo-600 hover:text-indigo-800 font-bold text-sm bg-indigo-50 px-3 py-1.5 rounded-lg border border-indigo-100 hover:bg-indigo-100 transition-colors"
+                                        >
+                                            إدارة
+                                        </a>
+                                        <button
+                                            onClick={() => handleDelete(instructor.id, instructor.name)}
+                                            className="text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 p-2 rounded-lg border border-red-100 transition-colors"
+                                            title="مسح المنصة"
+                                        >
+                                            <Trash2 size={18} />
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
