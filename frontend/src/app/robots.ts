@@ -1,12 +1,14 @@
 import { MetadataRoute } from 'next';
+import { headers } from 'next/headers';
 
-export default function robots(): MetadataRoute.Robots {
-    const currentHost = process.env.NODE_ENV === 'production'
-        ? 'alshateracademy.com'
-        : 'localhost:3000';
+export const dynamic = 'force-dynamic';
+
+export default async function robots(): Promise<MetadataRoute.Robots> {
+    const headersList = await headers();
+    const host = headersList.get('host') || 'alshateracademy.com';
     const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
 
-    const baseUrl = `${protocol}://${currentHost}`;
+    const baseUrl = `${protocol}://${host}`;
 
     return {
         rules: {
